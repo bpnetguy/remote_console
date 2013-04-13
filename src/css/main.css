@@ -1,0 +1,34 @@
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+body {
+    margin: 10px 10px;
+
+}
+
+#consoleInput {
+    position: relative;
+    width: 50%;
+    display: block;
+    top: 10px;
+}
+
+#consoleOutput {
+    position: relative;
+    width: 50%;
+    display: block;
+    height: 50%;
+}
+#consoleOutput:after {
+    content: "";
+    background-color: gray;
+    display: block;
+    display: block;
+    width: 5px;
+    height: 10px;
+}
