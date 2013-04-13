@@ -23,6 +23,13 @@ define(['backbone', "./ConsoleInput", "./ConsoleOutput"], function (Backbone, Co
                         }
 
                     }, this);
+            $.subscribe("#consoleOutput/update",function(topic, data){
+                var self = this;
+                setTimeout(function() {
+                    self.$el.scrollTop(self.$el.height());
+                },0);
+            },this);
+
         },
         render: function() {
             var views = this.views;

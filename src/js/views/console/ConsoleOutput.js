@@ -16,6 +16,7 @@ define(['backbone', 'models/Command', 'pubsub'], function (Backbone, Command){
                         command.save(null, {success: function(model, resp, options) {
 
                             self.$el.append("\n" + resp.stdout.trim());
+                            $.publish("#consoleOutput/update");
                         }});
 
                     }, this);
