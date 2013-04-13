@@ -1,4 +1,4 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'views/console/Console'], function(Backbone, Console) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             "*actions": "defaultRoute" // matches http://example.com/#anything-here
@@ -7,8 +7,8 @@ define(['backbone'], function(Backbone) {
             this.viewManager = viewManager;
         },
         defaultRoute: function() {
-            console.log("defaultRoute");
-
+            var console = new Console();
+            this.viewManager.showView(console);
         }
     });
     // Initiate the router

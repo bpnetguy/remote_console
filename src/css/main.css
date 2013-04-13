@@ -11,24 +11,47 @@ body {
 
 }
 
+#console {
+    overflow-y: scroll;
+    height: 500px;
+    width: 75%;
+    position: absolute;
+    background-color: rgba(1,1,1,.5);
+    border: 1px solid black;
+    color: rgba(0,0,0,.6);
+}
 #consoleInput {
     position: relative;
     width: 50%;
     display: block;
     top: 10px;
+    /*box-shadow:  0 0 5px rgba(0, 0, 255, 1);*/
+    border:0px solid rgba(0,0,0, 0.8);
+    top:-13px;
+    left:8px;
+    cursor: none;
+    background-color: rgba(0,0,0,0);
+
 }
+
+
+input#consoleInput:focus {
+    border: 0px !important;
+    box-shadow: 0 0;
+    outline: none;
+}
+
 
 #consoleOutput {
     position: relative;
     width: 50%;
     display: block;
-    height: 50%;
 }
 #consoleOutput:after {
-    content: "";
-    background-color: gray;
+    content: "$";
     display: block;
     display: block;
-    width: 5px;
-    height: 10px;
+    width: 10px;
+    height: 15px;
+    left:10px;
 }
