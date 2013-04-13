@@ -26,7 +26,7 @@ define(['backbone', "./ConsoleInput", "./ConsoleOutput"], function (Backbone, Co
             $.subscribe("#consoleOutput/update",function(topic, data){
                 var self = this;
                 setTimeout(function() {
-                    self.$el.scrollTop(self.$el.height());
+                    self.$el.scrollTop(self.$el[0].scrollHeight);
                 },0);
             },this);
 
