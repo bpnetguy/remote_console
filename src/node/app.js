@@ -11,7 +11,12 @@ var app = express();
 
 app.configure(function(){
     app.use(express.static(__dirname + '/..'));
+    app.use(function(req, res, next) {
+      res.contentType('application/json');
+      next();
+    });
 });
+
 var routes  = require('./routes');
 
 

@@ -10,9 +10,13 @@ define(['backbone', 'models/Command', 'pubsub'], function (Backbone, Command){
                             return;
                         }
 //                        console.log(topic + " " + cmd);
-                        this.$el.append("\n" + cmd);
+                        this.$el.append("\n$" + cmd);
                         var command = new Command({command:cmd});
-                        command.save();
+                        var self = this;
+                        command.save(null, {success: function(model, resp, options) {
+
+                            self.$el.append("\n" + resp.stdout.trim());
+                        }});
 
                     }, this);
 
