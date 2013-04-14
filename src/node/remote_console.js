@@ -6,8 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var express = require("express");
-var app = express();
+var express = require('express'),
+    app = express()
+  , http = require('http')
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server);
+
+io.set("log level", 0);
 
 app.configure(function(){
     app.use(express.static(__dirname + '/..'));
@@ -15,20 +20,26 @@ app.configure(function(){
       res.contentType('application/json');
       next();
     });
+    app.use(express.cookieParser());
+    app.use(express.session({secret: 'secret', key: 'express.sid'}));
 });
 
 var routes  = require('./routes');
 
 
 
-// Authenticator
-/*
-app.use(express.basicAuth(function(user, pass, callback) {
- var result = (user === 'testUser' && pass === 'testPass');
- callback(null , result);
-}));
-*/
+var socket  = require('./socket');
+io.sockets.on('connection', socket.socketConnection);
 
+app.get('/jsconsole/listClient', socket.listClients);
+app.post('/jsconsole/:ip/eval', socket.eval);
 app.post('/cli', routes.cli);
-app.listen(process.env.PORT || 3000);
+
+server.listen(process.env.PORT || 3000);
+
+
+
+
+
+
 console.log('Listening on port ' + (process.env.PORT || 3000));
