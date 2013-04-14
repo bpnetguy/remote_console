@@ -27,8 +27,8 @@ require.config({
 require(["jquery", 'socketio'], function($) {
     $(function() {
         var socket = io.connect();
-          socket.on('news', function (data) {
+          socket.on('connect', function (data) {
             console.log(data);
-            socket.emit('my other event', { my: 'data' });
+            socket.emit('join', { my: 'data' });
           });    });
 });
