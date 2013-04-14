@@ -26,7 +26,10 @@ require.config({
 });
 require(["jquery", 'socketio'], function($) {
     $(function() {
-        var socket = io.connect();
+          var pathname = window.location.pathname;
+	  var folder  = pathname.substring(0,pathname.lastIndexOf("/"));
+          if(folder[0]  === '/') folder = folder.substring(1);
+	  var socket = io.connect(null, {resource: folder + '/socket.io'});
           socket.on('connect', function (data) {
             console.log(data);
             socket.emit('join', { my: 'data' });
