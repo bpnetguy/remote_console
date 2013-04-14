@@ -12,7 +12,7 @@ var express = require('express'),
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
-io.set("log level", 0);
+io.set("log level", 3);
 
 app.configure(function(){
     app.use(express.static(__dirname + '/..'));
@@ -22,6 +22,10 @@ app.configure(function(){
     });
     app.use(express.cookieParser());
     app.use(express.session({secret: 'secret', key: 'express.sid'}));
+//    app.use(function (req, res, next) {
+//        console.log('Hello, your session id is ' + req.sessionID);
+//        next();
+//    });
 });
 
 var routes  = require('./routes');

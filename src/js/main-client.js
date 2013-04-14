@@ -35,6 +35,6 @@ require(["jquery", 'socketio'], function($) {
 	  var socket = io.connect(null, {resource: folder + 'socket.io'});
           socket.on('connect', function (data) {
             console.log(data);
-            socket.emit('join', { my: 'data' });
+            socket.emit('join', { name: 'Console Client' });
           });    });
 });

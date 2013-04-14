@@ -1,11 +1,21 @@
-define(['backbone', 'views/console/Console'], function(Backbone, Console) {
+define(['backbone', 'views/console/Console',
+    'views/jsconsole/Console'], function(Backbone, Console, JSConsole) {
     var AppRouter = Backbone.Router.extend({
         routes: {
-            "*actions": "defaultRoute" // matches http://example.com/#anything-here
+            "jsConsole": "showJSConsole",
+            "jsConsole/:clientName": "showJSConsole",
+            "home": "defaultRoute",
+            "*actions": "defaultRoute"
         },
         setViewManager: function(viewManager) {
             this.viewManager = viewManager;
         },
+        showJSConsole: function(clientName) {
+            console.log("Show JS Console");
+            var jsConsole = new JSConsole({clientName: clientName});
+            this.viewManager.showView(jsConsole);
+        },
+
         defaultRoute: function() {
             var console = new Console();
             this.viewManager.showView(console);
