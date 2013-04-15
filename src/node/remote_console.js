@@ -36,7 +36,7 @@ var socket  = require('./socket');
 io.sockets.on('connection', socket.socketConnection);
 
 app.get('/jsconsole/listClient', socket.listClients);
-app.post('/jsconsole/:ip/eval', socket.eval);
+app.post('/jsconsole/command', socket.command);
 app.post('/cli', routes.cli);
 
 server.listen(process.env.PORT || 3000);

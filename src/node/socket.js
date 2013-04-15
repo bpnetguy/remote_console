@@ -1,6 +1,8 @@
 
 var clientList = {};
-var clientManager;
+var clients = {};
+var clientManager = undefined;
+var commandResponseHandler = {};
 
 function getValueFromCookie(headers, key) {
     var cookies = [];
@@ -21,18 +23,25 @@ var socketConnection = function (client) {
 
 	client.on('join', function(data) {
 		console.log(data.name + ": JOINED!!!!!!");
-//        clientManager[expressSid] = client;
+        clients[expressSid] = client;
 		clientList[expressSid] = {"sessionid": client.id, "name": data.name, "address": handshaken.address, "headers":handshaken.headers };
 	});
+
+    client.on('command', function(data) {
+        commandResponseHandler[expressSid].send(data);
+        delete commandResponseHandler[expressSid];
+    })
 };
-var evalCommand = function evalCommand(request, res, next) {
+var command = function command(request, res, next) {
     var body = '';
     request.on('data', function(data) {
         body += data;
     });
     request.on('end', function() {
-        res.send('servername: ' + request.hostname + " Body " + body);
-        clientList['clientuser'].emit('eval', JSON.parse(body));
+        var jsonBody = JSON.parse(body);
+        commandResponseHandler[jsonBody.clientId] = res;
+        clients[jsonBody.clientId].emit("command", jsonBody);
+//        res.send('servername: ' + request.hostname + " Body " + body);
     });
 };
 
@@ -62,5 +71,5 @@ var listClients = function listClients(request, res, next) {
 
 exports.socketConnection = socketConnection;
 //exports.status = undefined;
-exports.eval = evalCommand;
+exports.command = command;
 exports.listClients = listClients;

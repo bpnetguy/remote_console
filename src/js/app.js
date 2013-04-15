@@ -1,13 +1,14 @@
-define(['backbone', 'ViewManager', 'router'], function(Backbone, ViewManager, router) {
+define(['backbone', 'ViewManager', 'router', 'views/menu/Menu'], function(Backbone, ViewManager, router, Menu) {
 
     return {
         initialize: function() {
             var el = $('<div></div>')[0];
             var viewManager = new ViewManager({el:el});
             router.setViewManager(viewManager);
-            $('body').append(el);
+
+            var menu = new Menu();
+            $('body').append(menu.el).append(el);
             Backbone.history.start();
-            Backbone.history.navigate("#home");
         }
     }
 });

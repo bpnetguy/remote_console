@@ -1,4 +1,5 @@
-define(['backbone', 'models/Command', 'collections/Client','pubsub'], function (Backbone, Command, ClientCollection){
+define(['backbone', 'models/JSCommand', 'collections/Client','pubsub'], function (Backbone, JSCommand, ClientCollection){
+    var selectMatch = /select \d+/;
     var Console = Backbone.View.extend({
         tagName: "pre",
         id:"consoleOutput",
@@ -11,20 +12,29 @@ define(['backbone', 'models/Command', 'collections/Client','pubsub'], function (
                         if(cmd === "clear") {
                             this.render();
                             return;
+                        }
+                        this.$el.append("\n$" + cmd);
+                        if(selectMatch.test(cmd)) {
+                            var index = parseInt(cmd.split(" ")[1]);
+                            if(this.clientCollection.models[index]) {
+                                this.client = this.clientCollection.models[index];
+                                this.$el.append("\n" + this.clientCollection.models[index].get("name") + " selected");
+                            } else {
+                                this.$el.append("\n" + index + " not found");
+                            }
+
                         } else if(cmd === "list") {
                             this.clientCollection.fetch({reset:true});
                         } else {
-                            this.$el.append("\n$" + cmd);
-                            var command = new Command({command:cmd});
+//                            this.$el.append("\n$" + cmd);
+                            var command = new JSCommand({clientId: this.client.get('id'), argument:cmd, command:"eval"});
                             var self = this;
                             command.save(null, {success: function(model, resp, options) {
-
-                                self.$el.append("\n" + resp.stdout.trim());
+                                self.$el.append("\n" + resp.response.trim());
                                 $.publish("#consoleOutput/update");
                             }});
 
                         }
-                        this.$el.append("\n$" + cmd);
 
 
                     }, this);
