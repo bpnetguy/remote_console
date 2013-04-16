@@ -27,10 +27,16 @@ define(['backbone', 'models/JSCommand', 'collections/Client','pubsub'], function
                             this.clientCollection.fetch({reset:true});
                         } else {
 //                            this.$el.append("\n$" + cmd);
-                            var command = new JSCommand({clientId: this.client.get('id'), argument:cmd, command:"eval"});
+                            var args = cmd.split(/ +/);
+                            var command = undefined;
+                            if(args.length === 1) {
+                                command = new JSCommand({clientId: this.client.get('id'), argument:cmd, command:"eval"});
+                            } else {
+                                command = new JSCommand({clientId: this.client.get('id'), argument:args[1], command:args[0]});
+                            }
                             var self = this;
                             command.save(null, {success: function(model, resp, options) {
-                                self.$el.append("\n" + resp.response.trim());
+                                self.$el.append("\n" + resp.response);
                                 $.publish("#consoleOutput/update");
                             }});
 
