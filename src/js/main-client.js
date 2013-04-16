@@ -84,7 +84,7 @@ require(['socketio'], function () {
             var result = {
                 agent:window.navigator.userAgent,
             };
-            return result;
+            return JSON.stringify(result);
         },
         click:function (data) {
             var domData = getDom(data.argument);
@@ -172,7 +172,7 @@ require(['socketio'], function () {
                 width:dom.width(),
                 height:dom.height()
             };
-            return position;
+            return JSON.stringify(position);
         },
         getElementFromPosition:function (data) {
             console.log("Session Id " + server.socket.sessionid);
@@ -214,6 +214,9 @@ require(['socketio'], function () {
                 response = requestHandlers[data.command](data);
             } catch(Error) {
                 response = "Handler error";
+            }
+            if(typeof(response) === "object") {
+                response = JSON.stringify(response);
             }
             data.response = response;
             server.emit('command', data);
